@@ -1,14 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h> //also try #include "math.h"
+#include <math.h>
 #include "move.h"
-//From terminal:
-//gcc -Wall -o "a_star_c" "a_star_c.c" -lm
-//Then you can run it in geany (F5) or in terminal (./a_star_c)
-
-//YOU NEED TO SETUP COST PROPERLY FOR DIAGONAL MOVEMENTS
-//SEE THE RESULTS OF THE CURRENT TEST
-// f = g1+ DIST*2 helps for this test, why not DIST*1.4??
 
 #define NUM_ROWS 70
 #define NUM_COLS 55
@@ -172,7 +165,7 @@ int main()
 			cost = arc_move(next_pos,x1,y1,th1,motions[m],DIST);
 			if(next_pos[0] == 32767)
 			{
-				printf("Invalid motion in simp_move\n");
+				printf("Invalid motion in move\n");
 				return 1;
 			}
 			x2 = next_pos[0];
@@ -292,6 +285,7 @@ int main()
 		r_init = round(-y_init);
 		c_init = round(x_init);
 		
+		//Step backwards and store the optimum path
 		//printf("x: %.1f, y: %.1f\n",x1,y1);
 		fprintf(fpPath,"%.1f %.1f\n",x1,y1);
 		while( (abs(r1-r_init) > 0 || abs(c1-c_init) > 0) && dCount >= -2)
@@ -301,7 +295,7 @@ int main()
 			cost = arc_move(next_pos,x1,y1,th1,rev_motion,DIST);
 			if(next_pos[0] == 32767)
 			{
-				printf("Invalid motion in simp_move\n");
+				printf("Invalid motion in move\n");
 				return 1;
 			}
 			x1 = next_pos[0];
@@ -329,54 +323,7 @@ int main()
 	{
 		printf("\aERROR closing test_path.txt\n");
 		return (102);
-	}
-	
-	//test move
-	/*printf("*******TEST MOVE***********\n");
-	x1 = 0;
-	y1 = 0;
-	th1 = 315;
-	
-	m=3;
-	arc_move(next_pos,x1,y1,th1,m,DIST);
-	x2 = next_pos[0];
-	y2 = next_pos[1];
-	th2 = next_pos[2];
-	printf("m=%d,x=%.0f,y=%.0f,th=%d\n",m,x2,y2,th2);
-	m=-3;
-	arc_move(next_pos,x2,y2,th2,m,DIST);
-	x2 = next_pos[0];
-	y2 = next_pos[1];
-	th2 = next_pos[2];
-	printf("m=%d,x=%.0f,y=%.0f,th=%d\n",m,x2,y2,th2);
-	
-	m=2;
-	arc_move(next_pos,x1,y1,th1,m,DIST);
-	x2 = next_pos[0];
-	y2 = next_pos[1];
-	th2 = next_pos[2];
-	printf("m=%d,x=%.0f,y=%.0f,th=%d\n",m,x2,y2,th2);
-	m=-2;
-	arc_move(next_pos,x2,y2,th2,m,DIST);
-	x2 = next_pos[0];
-	y2 = next_pos[1];
-	th2 = next_pos[2];
-	printf("m=%d,x=%.0f,y=%.0f,th=%d\n",m,x2,y2,th2);
-	
-	m=1;
-	arc_move(next_pos,x1,y1,th1,1,DIST);
-	x2 = next_pos[0];
-	y2 = next_pos[1];
-	th2 = next_pos[2];
-	printf("m=%d,x=%.0f,y=%.0f,th=%d\n",1,x2,y2,th2);
-	m=-1;
-	arc_move(next_pos,x2,y2,th2,-1,DIST);
-	x2 = next_pos[0];
-	y2 = next_pos[1];
-	th2 = next_pos[2];
-	printf("m=%d,x=%.0f,y=%.0f,th=%d\n",-1,x2,y2,th2);
-	*/
-	
+	}	
 	
 	return 0;
 }
