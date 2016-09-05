@@ -1,0 +1,66 @@
+git notes:
+
+cd desire_dir
+git clone https://github.com/coderkarl/yard_bot.git
+cd yard_bot
+
+edit files/folders as desired
+
+cd path/to/project/repo
+git checkout -b branch_name
+
+edit files/folders as desired
+(I think I can edit locally before or after the checkout command, test it)
+
+git add .
+git commit -a -m "message to show"
+sudo git push origin branch_name
+
+(If git push origin branch_name gives error)
+git remote set-url origin https://coderkarl@github.com/coderkarl/yard_bot.git
+
+--------------------------------------------------------------
+https://gist.github.com/digitaljhelms/4287848
+branches: master, stable, hotfix, bugfix, feature
+
+(feature example:)
+git checkout -b feature-id master //local branch for new feature
+git push origin feature-id //new feature remotely available
+git merge master //merges changes from master into feature branch
+(when feature is complete:)
+git checkout master //change to master branch
+git merge --no-ff feature-id //create commit object during merge
+git push origin master //push merge changes
+git push origin :feature-id //delete remote branch
+
+(hotfix example:)
+git checkout -b hotfix-id stable //local branch for hotfix
+git push origin hotfix-id //new hotfix remotely available
+(when hotfix is done:)
+git checkout stable //change to stable branch
+git merge --no-ff hotfix-id //forces creation of commit object during merge
+git tag -a <tag> //tags the fix
+git push origin stable --tags //push tag changes
+(Now merge changes into master as well)
+git checkout master
+git merge --no-ff hotfix-id
+git push origin master
+git push origin :hotfix-id
+(also try for delete)
+git push origin --delete hotfix-id
+
+----------------------------------------------------------------
+https://git.wiki.kernel.org/index.php/GitSubmoduleTutorial
+
+----------------------------------------------------------------
+stage changes (check git status afterward)
+git add -u //adds deleted file to commit list
+git add DIRECTORY //adds new folder to commit list
+git add DIRECTORY/* //adds new folder contents to commit list
+
+//need to commit before push
+git commit -m "MESSAGE"
+sudo git push origin branch-name
+
+--------------------------------------------------------------
+http://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
