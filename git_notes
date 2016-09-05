@@ -4,6 +4,9 @@ cd desire_dir
 git clone https://github.com/coderkarl/yard_bot.git
 cd yard_bot
 
+(If git push origin branch_name gives error)
+git remote set-url origin https://coderkarl@github.com/coderkarl/yard_bot.git
+
 edit files/folders as desired
 
 cd path/to/project/repo
@@ -15,9 +18,6 @@ edit files/folders as desired
 git add .
 git commit -a -m "message to show"
 sudo git push origin branch_name
-
-(If git push origin branch_name gives error)
-git remote set-url origin https://coderkarl@github.com/coderkarl/yard_bot.git
 
 --------------------------------------------------------------
 https://gist.github.com/digitaljhelms/4287848
