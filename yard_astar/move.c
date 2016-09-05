@@ -24,7 +24,6 @@ float arc_move(float next_pos[], float x1, float y1, int th1, int motion, float 
 	if(th1 < 0){th1 += 360;}
 	if(th1 >= 360){th1 -= 360;}
 	p = (th1/45)%8; //current theta index (0 to 7)
-	//printf("m_index = %d, p = %d\n",m_index,p);
 	
 	next_pos[0] = x1 + delta_x[m_index][p]*d; //x2
 	next_pos[1] = y1 + delta_y[m_index][p]*d; //y2
