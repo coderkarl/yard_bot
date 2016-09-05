@@ -4,7 +4,7 @@ cd desire_dir
 git clone https://github.com/coderkarl/yard_bot.git
 cd yard_bot
 
-(If git push origin branch_name gives error)
+(If git push origin branch_name gives error, so far always needed)
 git remote set-url origin https://coderkarl@github.com/coderkarl/yard_bot.git
 
 edit files/folders as desired
