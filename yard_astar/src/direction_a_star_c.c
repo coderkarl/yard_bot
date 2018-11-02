@@ -197,7 +197,8 @@ int main()
 					//if(action[r1][c1][p1] * motions[m] < 0){cost = cost*10;} //Really slows it down, similar path in the end
 					g2 = g1 + cost*DIST;
 					
-					h2 = sqrt((xg-x2)*(xg-x2) + (yg-y2)*(yg-y2));
+					//h2 = sqrt((xg-x2)*(xg-x2) + (yg-y2)*(yg-y2
+                    h2 = (xg-x2)*(xg-x2) + (yg-y2)*(yg-y2);
 					f2 = g2+h2;
 					if(nOpen < MAX_OPEN)
 					{
