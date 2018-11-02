@@ -21,7 +21,7 @@ plot(x_init,y_init,'bo','Markersize',20)
 plot(xg,yg,'go','Markersize',10)
 plot(xg,yg,'go','Markersize',30)
 axis equal
-pause
+%pause
 
 %plot path
 plot(x,y,'g')

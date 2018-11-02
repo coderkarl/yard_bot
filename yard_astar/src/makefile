@@ -15,6 +15,7 @@ OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 
 $(ODIR)/%.o: %.c $(DEPS)
+	test -d $(ODIR) || mkdir $(ODIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 test_a_star: $(OBJ)
