@@ -25,18 +25,24 @@ float arc_move(float next_pos[], float x1, float y1, int th1, int motion, float 
 	if(th1 >= 360){th1 -= 360;}
 	p = (th1/45)%8; //current theta index (0 to 7)
 	
-	next_pos[0] = x1 + delta_x[m_index][p]*d; //x2
-	next_pos[1] = y1 + delta_y[m_index][p]*d; //y2
+    float net_delta_x = (float)(delta_x[m_index][p])*d;
+	float net_delta_y = (float)(delta_y[m_index][p])*d;
+	next_pos[0] = x1 + net_delta_x; //x2
+	next_pos[1] = y1 + net_delta_y; //y2
 	th2 = th1 + delta_theta[m_index]; //th2
 	if(th2 < 0){th2 += 360;}
 	if(th2 >= 360){th2 -= 360;}
 	next_pos[2] = th2;
 	
-	cost = abs(delta_x[m_index][p]) + abs(delta_y[m_index][p]);
-	if(motion < 0)
+	//cost = 1;//net_delta_x*net_delta_x + net_delta_y*net_delta_y;
+    cost = (abs(delta_x[m_index][p]) + abs(delta_y[m_index][p])) > 1 ? 1.42*d : d;
+	/*if(motion < 0)
 	{
 		cost = cost*2;
-	}
+	}*/    
+    
+    //printf("cost: %0.1f, %0.1f, %d, %d, %0.1f %0.1f %0.1f\n", x1, y1, th1, motion, net_delta_x, net_delta_y, cost);
+    
 	return cost;
 }
 

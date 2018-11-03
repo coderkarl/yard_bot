@@ -13,7 +13,7 @@
 
 //The a-star path-finding data of a map grid cell
 typedef struct {
-	float f; //f = g+heuristic
+	float f; //f = g+heuristic = (CUMULATIVE distance)^2 + distance_to_goal^2
 	float g; //cumulative motion cost, should be actual distance, maybe weight reverse
 	float x; //x coordinate in meters
 	float y; //y coordinate in meters
@@ -127,7 +127,7 @@ int main()
 
 	float xg = 10;
 	float yg = -20;
-	int thg = 270;
+	int thg = 90;
 	int rg = round(-yg);
 	int cg = round(xg);
 	int pg = (thg/45)%8;
@@ -149,7 +149,7 @@ int main()
 	finished[r1][c1][p1] = 1;
 	g1 = 0;
 	//h2 = sqrt((xg-x1)^2 + (yg-y1)^2);
-	//f2 = g1+h2;
+	//f2 = g1*g1+h2;
 	nOpen = 0;
 	done = 0;
 	no_sol = 0;
@@ -159,8 +159,13 @@ int main()
 	dCount = 0;
 	while(!done && !no_sol)
 	{
+        // calculate angle to goal
+		float dx = xg-x1;
+		float dy = yg-y1;
+		int des_heading_deg = (int)(atan2(dy,dx)*180.0/3.1459+360)%360;
+        //printf("Current x,y,th,des_th: %0.1f, %0.1f, %d, %d\n",x1,y1,th1,des_heading_deg);
 		md(5);
-		for(m = 0; m<numMotions; m++)
+		for(m = 3; m<numMotions; m++)
 		{
 			cost = arc_move(next_pos,x1,y1,th1,motions[m],DIST);
 			if(next_pos[0] == 32767)
@@ -195,11 +200,12 @@ int main()
 					}*/
 					
 					//if(action[r1][c1][p1] * motions[m] < 0){cost = cost*10;} //Really slows it down, similar path in the end
-					g2 = g1 + cost*DIST;
+					g2 = g1 + cost;//*DIST; ALREADY MULTIPLIED BY DIST IN arc_move
 					
 					//h2 = sqrt((xg-x2)*(xg-x2) + (yg-y2)*(yg-y2
                     h2 = (xg-x2)*(xg-x2) + (yg-y2)*(yg-y2);
-					f2 = g2+h2;
+                    h2 += abs((float)(th2-des_heading_deg)/100.0);
+					f2 = g2*g2+h2; // It is imperative that the cum. cost g term is >= heuristic, h
 					if(nOpen < MAX_OPEN)
 					{
 						nOpen += 1;
@@ -222,6 +228,7 @@ int main()
 					action[r2][c2][p2] = motions[m];
 				}
 			}
+            //printf("x,y,th,f,g,h: %0.1f, %0.1f, %d, %0.01f, %0.01f, %0.01f\n",x2,y2,th2,f2,g2,h2);
 		}
 		if(nOpen == 0)
 		{
@@ -230,26 +237,30 @@ int main()
 		}
 		else
 		{
+            /*
 			md(6);
-			/*printf("Before*****************\n");
+			printf("Before*****************\n");
 			for(k=0; k< nOpen; k++)
 			{
 				printf("open[%d] = %0.1f, %0.1f, %0.1f, %0.1f, %0.1f\n",k,open[k].f,open[k].g,open[k].x,open[k].y,open[k].theta);
 			}
 			printf("Sort it\n");
-			*/
+            */
+			
 			if(nOpen > 1)
 			{
 				qsort(open,nOpen,sizeof(Cell),compare);
 			}
-			/*printf("After***********\n");
+            /*
+			printf("After***********\n");
 			for(k=0; k< nOpen; k++)
 			{
 				printf("open[%d] = %0.1f, %0.1f, %0.1f, %0.1f, %0.1f\n",k,open[k].f,open[k].g,open[k].x,open[k].y,open[k].theta);
 			}
 			printf("Enter key\n");
 			scanf("%d",&a);
-			*/
+            */
+			
 			g1 = open[nOpen-1].g;
 			x1 = open[nOpen-1].x;
 			y1 = open[nOpen-1].y;
@@ -268,7 +279,7 @@ int main()
 			{
 				nOpen = 0;
 			}
-			if(r1 == rg && c1 == cg && p1 == pg)
+			if(r1 == rg && c1 == cg) // && p1 == pg)
 			{
 				done = 1;
 				printf("done\n");
